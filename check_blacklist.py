@@ -1,3 +1,4 @@
+import asyncio
 import pydnsbl
 import logging
 from netaddr import IPNetwork
@@ -41,25 +42,31 @@ def send_email_notification(blacklisted_ips):
     server.sendmail(sender_email, receiver_email, text)
     server.quit()
 
-def check_ip_blacklist(ip_list):
+async def check_single_ip(ip_checker, single_ip, blacklisted_ips):
+    result = await ip_checker.check_async(str(single_ip))
+    if result.blacklisted:
+        message = f"IP {single_ip} is blacklisted on: {', '.join(result.detected_by)}"
+        print(message)
+        logging.info(message)
+        blacklisted_ips.append((str(single_ip), result.detected_by))
+    else:
+        message = f"IP {single_ip} is not blacklisted."
+        print(message)
+        logging.info(message)
+
+async def check_ip_blacklist(ip_list):
     ip_checker = pydnsbl.DNSBLIpChecker()
     blacklisted_ips = []
 
+    tasks = []
     for ip in ip_list:
         for single_ip in IPNetwork(ip):
-            result = ip_checker.check(str(single_ip))
-            if result.blacklisted:
-                message = f"IP {single_ip} is blacklisted on: {', '.join(result.detected_by)}"
-                print(message)
-                logging.info(message)
-                blacklisted_ips.append((str(single_ip), result.detected_by))
-            else:
-                message = f"IP {single_ip} is not blacklisted."
-                print(message)
-                logging.info(message)
+            tasks.append(check_single_ip(ip_checker, single_ip, blacklisted_ips))
+    await asyncio.gather(*tasks)
 
     # If we found any blacklisted IPs, send an email
     if blacklisted_ips:
         send_email_notification(blacklisted_ips)
 
-check_ip_blacklist(ip_list)
+# Run the asynchronous function
+asyncio.run(check_ip_blacklist(ip_list))

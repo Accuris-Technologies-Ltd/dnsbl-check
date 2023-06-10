@@ -6,6 +6,7 @@ This project is a Python script that checks a list of IPv4 addresses to see if t
 
 Before running the script, ensure you have the following Python packages installed:
 
+- asyncio
 - pydnsbl
 - netaddr
 - smtplib
@@ -16,7 +17,7 @@ Before running the script, ensure you have the following Python packages install
 You can install these packages using pip:
 
 ```bash
-pip install pydnsbl netaddr
+pip install asyncio pydnsbl netaddr
 ```
 
 The `smtplib`, `email.mime.multipart`, `email.mime.text`, and `logging` modules are part of the Python Standard Library and do not require separate installation.
