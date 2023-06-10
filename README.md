@@ -33,6 +33,9 @@ smtp_server = "smtp.example.com"
 smtp_port = 587  # typically 587, 465, or 25
 smtp_username = "smtp-username"
 smtp_password = "smtp-password"
+
+# IP list
+ip_list = ['192.0.2.0/24', '203.0.113.0/24']
 ```
 
 - `sender_email` - The email from which you want to send the notification
@@ -41,6 +44,7 @@ smtp_password = "smtp-password"
 - `smtp_port` - The SMTP port of your email provider
 - `smtp_username` - The username for the SMTP server
 - `smtp_password` - The password for the SMTP server
+- `ip_list` - The list of IP addresses or ranges you want to check. The IPs should be provided as strings in standard IPv4 format or CIDR notation.
 
 Make sure that the sender email is allowed to send emails via the specified SMTP server.
 
