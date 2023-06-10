@@ -15,6 +15,8 @@ smtp_port = 587  # typically 587, 465, or 25
 smtp_username = "smtp-username"
 smtp_password = "smtp-password"
 
+ip_list = ['192.0.2.0/24', '203.0.113.0/24']
+
 # Ensure the logs directory exists
 if not os.path.exists('logs'):
     os.makedirs('logs')
@@ -59,7 +61,5 @@ def check_ip_blacklist(ip_list):
     # If we found any blacklisted IPs, send an email
     if blacklisted_ips:
         send_email_notification(blacklisted_ips)
-
-ip_list = ['192.0.2.0/24', '203.0.113.0/24']
 
 check_ip_blacklist(ip_list)
