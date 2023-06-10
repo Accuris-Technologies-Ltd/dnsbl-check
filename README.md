@@ -23,7 +23,7 @@ The `smtplib`, `email.mime.multipart`, `email.mime.text`, and `logging` modules 
 
 ## Configuration
 
-Before running the script, replace the placeholders in the SMTP email settings with your actual data. These settings are used to send an email notification if any blacklisted IPs are found:
+Before running the script, replace the placeholders in the SMTP email settings and IP list with your actual data:
 
 ```python
 # SMTP email settings
